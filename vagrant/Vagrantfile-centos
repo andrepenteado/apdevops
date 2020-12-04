@@ -1,0 +1,19 @@
+Vagrant.configure("2") do |config_centos|
+
+    # CentOS
+    config_centos.vm.provider "virtualbox" do |vb|
+        vb.memory = 2000
+        vb.cpus   = 4
+        vb.gui = false
+    end
+
+    config_centos.vm.box = "centos/8"
+    config_centos.vm.box_version = "1905.1"
+    config_centos.vm.provision "shell", path: "add-ssh-key.sh"
+
+    config_centos.vm.define "centos" do |host_centos|
+        host_centos.vm.hostname = "centos"
+        host_centos.vm.network "private_network", ip: "10.0.0.200"
+    end
+
+end

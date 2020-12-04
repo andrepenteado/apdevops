@@ -1,0 +1,6 @@
+# Configurar chave SSH
+mkdir -p /root/.ssh
+touch /root/.ssh/authorized_keys
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCbLjLiB48BthVn4tpx6Jb/YMDM5W19dQg2a99besrmGApT8OLRbWrCmTINtyJ4zuQwy1PM9hAUs/lMddBUzyRXQodKJzqXAUg8/ln4PNyPni71xdIOUaHk9ioN1b6zo3VX7diXIDgpvMdWzZIYN25XF+SRJ8zfVN+tzZ3GC4FPcT5oqcGi4L1IQv8hiuwJk3TTeNnsy/XJJM0jJLABay7nQjQ3xdL9NJnVd5WEx3bhZwSrT5vQKuI1b+NVJ00Z9qXT57Pp5tkeR16OH8nFl5t30fu54PI2CS4pVUJcLdwbNgsXS15n6sNsRvO+7Wnfwpw5DMsORfB1bx5eUIrqdLvVkRhs6+oFeYaQWa5n1V6uW6x8/u/QGwCzL2fZ2QyoV5+k0ns7q/zA824g57Uam1wwpUKwBxKthtXRCEj/6J++2AjUg5IU97KAJ0FLkU3PDEJng31McqV9n2g4nn8TeCtUxvlkNT/vuKoJWq2P3VP2dwgSQH4nWvpEDvUJ8KSiBz0= andre@alphadesktop" >> /root/.ssh/authorized_keys
+chmod 700 /root/.ssh
+chmod 644 /root/.ssh/authorized_keys

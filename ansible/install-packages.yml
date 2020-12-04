@@ -1,0 +1,35 @@
+- name: Instalar pacotes básicos
+
+  hosts: all
+
+  tasks:
+    - name: Instalar pacotes básicos Ubuntu
+      apt:
+        state: latest
+        name:
+        - ntpdate
+        - sendmail
+        - apt-show-versions
+        - powerline
+        - sysvbanner
+        - boxes
+        - python3-pip
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Instalar pacotes básicos CentOS
+      yum:
+        state: latest
+        name:
+        - epel-release
+      when: ansible_distribution == 'CentOS'
+
+    - name: Instalar pacotes básicos CentOS
+      yum:
+        state: latest
+        name:
+          - logwatch
+          - htop
+          - sendmail
+          - logwatch
+          - python3-pip
+      when: ansible_distribution == 'CentOS'

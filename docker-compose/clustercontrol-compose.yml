@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+
+  cluster-control:
+    image: severalnines/clustercontrol
+    container_name: clustercontrol
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /home/andre/.ssh/:/home/andre/.ssh/
+    networks:
+      - db-cluster
+
+networks:
+  db-cluster:
+
+volumes:
+  pgdata-01:
+  pgdata-02:

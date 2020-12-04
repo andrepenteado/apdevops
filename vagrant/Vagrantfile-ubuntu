@@ -1,0 +1,38 @@
+Vagrant.configure("2") do |config_ubuntu|
+
+    # Ubuntu
+    config_ubuntu.vm.provider "virtualbox" do |vb|
+        vb.memory = 2000
+        vb.cpus   = 4
+        vb.gui = false
+    end
+
+    config_ubuntu.vm.box = "ubuntu/focal64"
+    config_ubuntu.vm.provision "shell", path: "add-ssh-key.sh"
+
+    config_ubuntu.vm.define "ubuntu01" do |host_ubuntu|
+        host_ubuntu.vm.hostname = "ubuntu01"
+        host_ubuntu.vm.network "private_network", ip: "10.0.0.101"
+    end
+    config_ubuntu.vm.define "ubuntu02" do |host_ubuntu|
+        host_ubuntu.vm.hostname = "ubuntu02"
+        host_ubuntu.vm.network "private_network", ip: "10.0.0.102"
+    end
+    config_ubuntu.vm.define "ubuntu03" do |host_ubuntu|
+        host_ubuntu.vm.hostname = "ubuntu03"
+        host_ubuntu.vm.network "private_network", ip: "10.0.0.103"
+    end
+    config_ubuntu.vm.define "ubuntu04" do |host_ubuntu|
+        host_ubuntu.vm.hostname = "ubuntu04"
+        host_ubuntu.vm.network "private_network", ip: "10.0.0.104"
+    end
+    config_ubuntu.vm.define "ubuntu05" do |host_ubuntu|
+        host_ubuntu.vm.hostname = "ubuntu05"
+        host_ubuntu.vm.network "private_network", ip: "10.0.0.105"
+    end
+    config_ubuntu.vm.define "ubuntu06" do |host_ubuntu|
+        host_ubuntu.vm.hostname = "ubuntu06"
+        host_ubuntu.vm.network "private_network", ip: "10.0.0.106"
+    end
+
+end

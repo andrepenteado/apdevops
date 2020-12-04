@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+
+  coredb:
+    image: postgres:9
+    container_name: coredb-postgresql
+    environment:
+      - POSTGRES_DB=coredb
+      - POSTGRES_USER=coreuser
+      - POSTGRES_PASSWORD=corepasswd
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata_coredb:/var/lib/postgresql/data
+
+volumes:
+  pgdata_coredb:

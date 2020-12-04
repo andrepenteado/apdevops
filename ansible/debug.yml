@@ -1,0 +1,8 @@
+- name: Debug
+
+  hosts: all
+
+  tasks:
+    - name: Exibir listas
+      debug:
+        msg: "{{ lookup('fileglob', '/home/andre/Downloads/*jpg').split(',') + test_list }}"

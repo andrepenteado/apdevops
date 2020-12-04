@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+
+  db-server-01:
+    image: severalnines/centos-ssh
+    container_name: db-server-01
+    ports:
+      - 5433:5432
+    environment:
+      - AUTO_DEPLOYMENT=0
+    volumes:
+      - pgdata-01:/var/lib/postgresql/data
+    networks:
+      - db-cluster
+
+  db-server-02:
+    image: severalnines/centos-ssh
+    container_name: db-server-02
+    ports:
+      - 5434:5432
+    environment:
+      - AUTO_DEPLOYMENT=0
+    volumes:
+      - pgdata-02:/var/lib/postgresql/data
+    networks:
+      - db-cluster
+
+networks:
+  db-cluster:
+
+volumes:
+  pgdata-01:
+  pgdata-02:

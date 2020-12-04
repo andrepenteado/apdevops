@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+
+  coredb-server:
+    image: postgres:13
+    container_name: coredb-postgresql
+    environment:
+      - POSTGRES_DB=coredb
+      - POSTGRES_USER=coreuser
+      - POSTGRES_PASSWORD=corepasswd
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata_coredb:/var/lib/postgresql/data
+
+  sisgrad:
+    image: sisgrad-gradle
+    container_name: sisgrad-gradle
+    ports:
+      - 8080:8080
+
+volumes:
+  pgdata_coredb:

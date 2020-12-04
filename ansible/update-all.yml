@@ -1,0 +1,16 @@
+- name: Atualizar Pacotes Ubuntu e CentOS
+
+  hosts: all
+
+  tasks:
+    - name: Atualizar Pacotes Ubuntu
+      apt:
+        update_cache: yes
+        upgrade: safe
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Atualizar Pacotes CentOS
+      yum:
+        name: '*'
+        state: latest
+      when: ansible_distribution == 'CentOS'
