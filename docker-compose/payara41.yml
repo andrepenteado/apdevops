@@ -1,0 +1,7 @@
+version: "3.7"
+services:
+  payara-server:
+    image: payara/server-full:173
+    ports:
+      - 4848:4848
+      - 8080:8080

@@ -26,6 +26,24 @@ resource "postgresql_role" "cpa" {
   password = "szJM7HbX"
 }
 
+resource "postgresql_role" "nfe" {
+  name     = "nfe"
+  login    = true
+  password = "nfe,,.."
+}
+
+resource "postgresql_role" "cte" {
+  name     = "cte"
+  login    = true
+  password = "cte,,.."
+}
+
+resource "postgresql_role" "mdfe" {
+  name     = "mdfe"
+  login    = true
+  password = "mdfe,,.."
+}
+
 resource "postgresql_database" "servicedesk_v2" {
   name              = "servicedesk_v2"
   owner             = "servicedesk_v2"
@@ -54,3 +72,23 @@ resource "postgresql_database" "cpa" {
   depends_on = [ postgresql_role.cpa ]
 }
 
+resource "postgresql_database" "nfe" {
+  name              = "nfe"
+  owner             = "nfe"
+  allow_connections = true
+  depends_on = [ postgresql_role.nfe ]
+}
+
+resource "postgresql_database" "cte" {
+  name              = "cte"
+  owner             = "cte"
+  allow_connections = true
+  depends_on = [ postgresql_role.cte ]
+}
+
+resource "postgresql_database" "mdfe" {
+  name              = "mdfe"
+  owner             = "mdfe"
+  allow_connections = true
+  depends_on = [ postgresql_role.mdfe ]
+}
