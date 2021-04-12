@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    postgresql = {
+      source = "cyrilgdn/postgresql"
+      version = "1.12.0"
+    }
+  }
+}
+
 provider "postgresql" {
   host            = "localhost"
   port            = 5432
@@ -24,6 +33,12 @@ resource "postgresql_role" "cpa" {
   name     = "cpa"
   login    = true
   password = "szJM7HbX"
+}
+
+resource "postgresql_role" "estagio" {
+  name     = "estagio"
+  login    = true
+  password = "HN3o4sVAP"
 }
 
 resource "postgresql_role" "nfe" {
@@ -70,6 +85,13 @@ resource "postgresql_database" "cpa" {
   owner             = "cpa"
   allow_connections = true
   depends_on = [ postgresql_role.cpa ]
+}
+
+resource "postgresql_database" "estagio" {
+  name              = "estagio"
+  owner             = "estagio"
+  allow_connections = true
+  depends_on = [ postgresql_role.estagio ]
 }
 
 resource "postgresql_database" "nfe" {
