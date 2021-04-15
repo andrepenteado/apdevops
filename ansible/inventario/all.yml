@@ -1,8 +1,8 @@
 producao:
   hosts:
     ubuntu01:
-      ansible_host: 10.0.0.101
+      ansible_host: 10.20.10.101
     ubuntu02:
-      ansible_host: 10.0.0.102
+      ansible_host: 10.20.10.102
     ubuntu03:
-      ansible_host: 10.0.0.103
+      ansible_host: 10.20.10.103

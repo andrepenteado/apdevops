@@ -1,6 +1,10 @@
 ansible_user: root
 ansible_ssh_private_key_file: ~/infra/datacenter-bauru/vagrant/ansible-user.key
 
+loki_url: ubuntu01
+
+tomcat_params: -Duser.timezone=GMT-3 -Duser.language=pt -Duser.country=BR -Dfile.encoding=UTF-8
+
 monitorados:
   servidores:
     - nome: 'ubuntu01'
@@ -13,3 +17,28 @@ monitorados:
     - nome: 'servicedesk'
       url: 'sistemas.fc.unesp.br'
       contexto: '/servicedesk/actuator/prometheus'
+
+servicedesk:
+  # Tomcat
+  memoria: 512m
+  cpus: 1
+  replicas: 1
+  env: dev
+
+  # PostgreSQL
+  max_connections: 20
+  shared_buffers: 128MB
+  effective_cache_size: 384MB
+  maintenance_work_mem: 32MB
+  checkpoint_completion_target: 0.7
+  wal_buffers: 3932kB
+  default_statistics_target: 100
+  random_page_cost: 4
+  effective_io_concurrency: 2
+  work_mem: 3276kB
+  min_wal_size: 1GB
+  max_wal_size: 4GB
+  max_worker_processes: 1
+  max_parallel_workers_per_gather: 1
+  max_parallel_workers: 1
+  max_parallel_maintenance_workers: 1

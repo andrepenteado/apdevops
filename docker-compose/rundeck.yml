@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+
+  postgresql:
+    image: postgres:13.2
+    container_name: rundeck_postgresql
+    environment:
+      - POSTGRES_DB=rundeck
+      - POSTGRES_USER=rundeck
+      - POSTGRES_PASSWORD=rundeck
+    volumes:
+      - ./postgresql:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+
+  rundeck:
+    image: rundeck/rundeck:SNAPSHOT
+    container_name: rundeck
+    ports:
+      - 4440:4440
+    environment:
+      RUNDECK_GRAILS_URL: http://localhost:4440
+      RUNDECK_DATABASE_DRIVER: org.postgresql.Driver
+      RUNDECK_DATABASE_USERNAME: rundeck
+      RUNDECK_DATABASE_PASSWORD: rundeck
+      RUNDECK_DATABASE_URL: jdbc:postgresql://postgresql/rundeck?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    volumes:
+      - ./dados/:/home/rundeck/server/data/
+      - ./opt/:/opt/
