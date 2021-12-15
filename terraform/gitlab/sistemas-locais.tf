@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    gitlab = {
+      source = "gitlabhq/gitlab"
+      version = "3.6.0"
+    }
+  }
+}
+
 provider "gitlab" {
   token = "<seu-token-pessoal>"
 }

@@ -18,6 +18,12 @@ monitorados:
       url: 'sistemas.fc.unesp.br'
       contexto: '/servicedesk/actuator/prometheus'
 
+servidor:
+  log:
+    loki: https://manager-local.bauru.unesp.br
+    rsyslog: ubuntu01
+    graylog: ubuntu01
+
 servicedesk:
   # Tomcat
   memoria: 512m
