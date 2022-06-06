@@ -1,1 +1,30 @@
-Vagrantfile-ubuntu
+Vagrant.configure("2") do |config_ubuntu|
+
+    # Ubuntu
+    config_ubuntu.vm.provider "virtualbox" do |vb|
+        vb.memory = 4000
+        vb.cpus   = 4
+        vb.gui = false
+    end
+
+    config_ubuntu.vm.box = "ubuntu/focal64"
+    config_ubuntu.vm.provision "shell", path: "add-ssh-key.sh"
+
+    config_ubuntu.vm.define "ubuntu01" do |host_ubuntu|
+        host_ubuntu.vm.hostname = "ubuntu01"
+        host_ubuntu.vm.network "private_network", ip: "10.10.10.101"
+    end
+
+#    config_ubuntu.vm.define "ubuntu02" do |host_ubuntu|
+#        host_ubuntu.vm.hostname = "ubuntu02"
+#        host_ubuntu.vm.network "private_network", ip: "10.10.10.102"
+#        host_ubuntu.vm.provider "virtualbox" do |vbox|
+#           vbox.customize ["modifyvm", :id, "--memory", "8000"]
+#        end
+#    end
+#    config_ubuntu.vm.define "ubuntu03" do |host_ubuntu|
+#        host_ubuntu.vm.hostname = "ubuntu03"
+#        host_ubuntu.vm.network "private_network", ip: "10.10.10.103"
+#    end
+
+end

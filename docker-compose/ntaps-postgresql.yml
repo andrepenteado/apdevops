@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+
+  db-ntaps:
+    image: postgres:13
+    container_name: ntaps-postgresql
+    environment:
+      - POSTGRES_DB=ntaps
+      - POSTGRES_USER=ntaps
+      - POSTGRES_PASSWORD=ntaps
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata_ntaps:/var/lib/postgresql/data
+
+volumes:
+  pgdata_ntaps:
