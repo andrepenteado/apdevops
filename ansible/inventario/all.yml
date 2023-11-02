@@ -1,8 +1,7 @@
-producao:
-  hosts:
-    ubuntu01:
-      ansible_host: 10.20.10.101
-    ubuntu02:
-      ansible_host: 10.20.10.102
-    ubuntu03:
-      ansible_host: 10.20.10.103
+all:
+  children:
+    producao:
+      hosts:
+        cluster.apcode.com.br:
+          ansible_host: 200.145.167.13
+          ansible_user: root

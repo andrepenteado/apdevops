@@ -1,0 +1,101 @@
+- name: Atualizar Pacotes Ubuntu e CentOS
+
+  hosts: all
+
+  tasks:
+
+    - name: Instalar zsh
+      become: true
+      ansible.builtin.apt:
+        state: latest
+        name:
+          - zsh
+
+    - name: Setar zsh como default shell
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/adduser.conf
+        regexp: '^DSHELL='
+        line: DSHELL=/usr/bin/zsh
+
+    - name: Setar zsh como default shell
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/default/useradd
+        regexp: '^SHELL='
+        line: SHELL=/usr/bin/zsh
+
+    - name: Baixar oh-my-zsh
+      become: true
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /etc/zsh/install-oh-my-zsh.sh
+
+    - name: Verificar se foi instalado oh-my-zsh
+      become: true
+      ansible.builtin.stat:
+        path: /etc/zsh/oh-my-zsh
+      register: path_oh_my_zsh
+
+    - name: Instalar oh-my-zsh. Para atualizar >>omz update (como root)
+      become: true
+      ansible.builtin.shell: echo -e "N\n" | ZSH="/etc/zsh/oh-my-zsh" sh /etc/zsh/install-oh-my-zsh.sh
+      when: not path_oh_my_zsh.stat.exists
+
+    - name: Copiar zshrc
+      become: true
+      ansible.builtin.shell: cp /etc/zsh/oh-my-zsh/templates/zshrc.zsh-template /etc/zsh/zshrc
+
+    - name: Verificar se tema do zsh foi instalado
+      become: true
+      ansible.builtin.stat:
+        path: /etc/zsh/oh-my-zsh/custom/themes/powerlevel10k
+      register: path_tema_zsh
+
+    - name: Baixar tema para zsh. Para configurar o tema, execute >>p10k configure. Para atualizar >>sudo git -C /etc/zsh/oh-my-zsh/custom/themes/powerlevel10k pull
+      become: true
+      ansible.builtin.shell: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /etc/zsh/oh-my-zsh/custom/themes/powerlevel10k
+      when: not path_tema_zsh.stat.exists
+
+    - name: Instalar syntax highlight
+      become: true
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        dest: /etc/zsh/oh-my-zsh/plugins/zsh-syntax-highlighting
+
+    - name: Instalar auto sugestões
+      become: true
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        dest: /etc/zsh/oh-my-zsh/plugins/zsh-autosuggestions
+
+    - name: Instalar auto-complete
+      become: true
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-completions.git
+        dest: /etc/zsh/oh-my-zsh/plugins/zsh-completions
+
+    - name: Setar path do oh-my-zsh
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/zsh/zshrc
+        regexp: '^export ZSH='
+        line: export ZSH="/etc/zsh/oh-my-zsh"
+
+    - name: Setar tema do zsh
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/zsh/zshrc
+        regexp: '^ZSH_THEME='
+        line: ZSH_THEME="powerlevel10k/powerlevel10k"
+
+    - name: Setar plugins do zsh
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/zsh/zshrc
+        regexp: '^plugins='
+        line: plugins=(git git-prompt zsh-syntax-highlighting zsh-autosuggestions zsh-completions ufw docker docker-compose)
+
+    - name: Setar zsh como shell
+      become: true
+      ansible.builtin.shell: chsh -s /usr/bin/zsh

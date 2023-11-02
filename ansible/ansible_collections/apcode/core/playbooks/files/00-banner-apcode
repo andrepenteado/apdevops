@@ -1,0 +1,3 @@
+#!/bin/bash
+banner apcode | boxes -d parchment
+echo -e "\n"

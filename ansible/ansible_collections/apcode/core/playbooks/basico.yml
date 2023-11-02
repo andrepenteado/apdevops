@@ -1,0 +1,103 @@
+- name: Instalar pacotes básicos
+
+  hosts: all
+
+  tasks:
+
+    - name: Instalar pacotes básicos Ubuntu
+      apt:
+        state: latest
+        name:
+        - systemd-timesyncd
+        - apt-show-versions
+        - htop
+        - sysvbanner
+        - boxes
+        - neofetch
+        - neovim
+        - zip
+        - unzip
+        - make
+        - software-properties-common
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Instalar pacotes básicos CentOS
+      yum:
+        state: latest
+        name:
+        - logwatch
+        - htop
+        - sendmail
+        - logwatch
+        - sysvbanner
+        - boxes
+        - neofetch
+        - neovim
+        - zip
+        - unzip
+        - make
+        - software-properties-common
+      when: ansible_distribution == 'CentOS'
+
+    - name: Copiar arquivo do banner de login
+      become: true
+      ansible.builtin.copy:
+        src: 00-banner-apcode
+        dest: /etc/update-motd.d/
+
+    - name: Configurar banner customizado do login
+      become: true
+      ansible.builtin.file:
+        path: /etc/update-motd.d/00-banner-anytask
+        mode: "0755"
+
+    - name: Desativar mensagem de ajuda exibida no login
+      become: true
+      ansible.builtin.file:
+        path: /etc/update-motd.d/10-help-text
+        mode: "0644"
+
+    - name: Desativar mensagens de métricas exibidos no login
+      become: true
+      ansible.builtin.file:
+        path: /etc/update-motd.d/50-landscape-sysinfo
+        mode: "0644"
+
+    - name: Desativar mensagem de novidades exibido no login
+      become: true
+      ansible.builtin.file:
+        path: /etc/update-motd.d/50-motd-news
+        mode: "0644"
+      
+    - name: Desativar mensagem no login
+      become: true
+      ansible.builtin.file:
+        path: /etc/update-motd.d/85-fwupd
+        mode: "0644"
+
+    - name: Desativar mensagem de novidades exibido no login
+      become: true
+      ansible.builtin.file:
+        path: /etc/update-motd.d/95-hwe-eol
+        mode: "0644"
+
+    - name: Setar timezone
+      become: true
+      ansible.builtin.timezone:
+        name: America/Sao_Paulo
+
+    - name: Set-NTP true
+      become: true
+      ansible.builtin.command: timedatectl set-ntp true
+
+    - name: Servidores NTP
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/timesyncd.conf 
+        line: NTP=a.ntp.br pool.ntp.br
+
+    - name: Reiniciar serviço systemd-timesyncd
+      become: true
+      ansible.builtin.service:
+        name: systemd-timesyncd
+        state: restarted
