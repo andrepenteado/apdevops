@@ -1,0 +1,18 @@
+Vagrant.configure("2") do |config_debian|
+
+    # Debian
+    config_debian.vm.provider "virtualbox" do |vb|
+        vb.memory = 4000
+        vb.cpus   = 4
+        vb.gui = false
+    end
+
+    config_debian.vm.box = "debian/bullseye64"
+    config_debian.vm.provision "shell", path: "add-ssh-key.sh"
+
+    config_debian.vm.define "jVision" do |host_jvision|
+        host_jvision.vm.hostname = "jVision"
+        host_jvision.vm.network "private_network", ip: "10.10.10.10"
+    end
+
+end

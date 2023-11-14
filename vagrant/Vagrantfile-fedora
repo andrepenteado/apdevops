@@ -1,0 +1,18 @@
+Vagrant.configure("2") do |config_fedora|
+
+    # Debian
+    config_fedora.vm.provider "virtualbox" do |vb|
+        vb.memory = 4000
+        vb.cpus   = 4
+        vb.gui = false
+    end
+
+    config_fedora.vm.box = "generic/fedora36"
+    config_fedora.vm.provision "shell", path: "add-ssh-key.sh"
+
+    config_fedora.vm.define "jVision-fedora" do |host_jvision|
+        host_jvision.vm.hostname = "jVision-fedora"
+        host_jvision.vm.network "private_network", ip: "10.10.10.200"
+    end
+
+end
