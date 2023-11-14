@@ -43,7 +43,22 @@ data:
     - job_name: 'Servidor cluster.apcode.com.br'
       static_configs:
         - targets: [ 'cluster.apcode.com.br:9100' ]
-          labels: { 'env': 'servidor' }  
+          labels: { 'env': 'servidores' }  
+    - job_name: 'Interface de Login'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+        - targets: [ 'login.apcode.com.br' ]
+          labels: { 'env': 'sistemas' }  
+    - job_name: 'Portal de Sistemas'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+        - targets: [ 'portal.apcode.com.br' ]
+          labels: { 'env': 'sistemas' }  
+    - job_name: 'Módulo de Controle'
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+        - targets: [ 'controle.apcode.com.br' ]
+          labels: { 'env': 'sistemas' }  
   alerts.yml: |-
     groups:
       - name: Alertas de Servidores
