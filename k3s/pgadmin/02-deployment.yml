@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin
+  namespace: pgadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin
+  template:
+    metadata:
+      labels:
+        app: pgadmin
+        name: pgadmin
+    spec:
+      containers:
+        - name: pgadmin
+          image: dpage/pgadmin4
+          imagePullPolicy: Always
+          ports:
+            - name: pgadmin
+              containerPort: 80
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: "andre.penteado@apcode.com.br"
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: "passwebra"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin
+  namespace: pgadmin
+spec:
+  selector:
+    app: pgadmin
+  type: LoadBalancer
+  ports:
+    - name: pgadmin
+      port: 80
+      targetPort: 80

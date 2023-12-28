@@ -1,0 +1,173 @@
+# Grafana tempo
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: tempo
+  namespace: monitor
+spec:
+  selector:
+    matchLabels:
+      app: tempo
+  template:
+    metadata:
+      labels:
+        app: tempo
+        name: tempo
+    spec:
+      containers:
+        - name: tempo
+          image: grafana/tempo
+          imagePullPolicy: Always
+          args:
+            - '--config.file=/etc/tempo/tempo-config.yml'
+          ports:
+            - name: tempo
+              containerPort: 3200
+              hostPort: 3200
+            - name: zipkin
+              containerPort: 9411
+              hostPort: 9411
+          volumeMounts:
+            - name: tempo-config
+              mountPath: /etc/tempo
+            - name: tempo-storage
+              mountPath: /tmp/tempo
+      volumes:
+        - name: tempo-config
+          configMap:
+            name: tempo
+        - name: tempo-storage
+          persistentVolumeClaim:
+            claimName: tempo-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tempo
+  namespace: monitor
+spec:
+  selector:
+    app: tempo
+  ports:
+    - name: tempo
+      port: 3200
+      targetPort: 3200
+    - name: zipkin
+      port: 9411
+      targetPort: 9411
+
+# Grafana loki
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: loki
+  namespace: monitor
+spec:
+  selector:
+    matchLabels:
+      app: loki
+  template:
+    metadata:
+      labels:
+        app: loki
+        name: loki
+    spec:
+      containers:
+        - name: loki
+          image: grafana/loki
+          imagePullPolicy: Always
+          args:
+            - '--config.file=/etc/loki/loki-config.yml'
+          ports:
+            - name: loki
+              containerPort: 3100
+              hostPort: 3100
+          volumeMounts:
+            - name: loki-config
+              mountPath: /etc/loki
+            - name: loki-storage
+              mountPath: /tmp
+      volumes:
+        - name: loki-config
+          configMap:
+            name: loki
+        - name: loki-storage
+          persistentVolumeClaim:
+            claimName: loki-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki
+  namespace: monitor
+spec:
+  selector:
+    app: loki
+  ports:
+    - name: loki
+      port: 3100
+      targetPort: 3100
+
+# Node Exporter
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nodeexporter
+  namespace: monitor
+  labels:
+    app: nodeexporter
+spec:
+  selector:
+    matchLabels:
+      app: nodeexporter
+  template:
+    metadata:
+      labels:
+        app: nodeexporter
+    spec:
+      containers:
+        - name: node-exporter
+          image: prom/node-exporter
+          imagePullPolicy: Always
+          args:
+            - --path.procfs=/host/proc
+            - --path.sysfs=/host/sys
+          ports:
+            - name: metrics
+              containerPort: 9100
+              hostPort: 9100
+          volumeMounts:
+            - name: proc
+              mountPath: /host/proc
+              readOnly:  true
+            - name: sys
+              mountPath: /host/sys
+              readOnly: true
+      hostNetwork: true
+      hostPID: true
+      volumes:
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: sys
+          hostPath:
+            path: /sys
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-exporter
+  namespace: monitor
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port:   '9100'
+spec:
+  selector:
+    app: nodeexporter
+  ports:
+    - name: node-exporter
+      port: 9100
+      targetPort: 9100

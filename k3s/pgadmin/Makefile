@@ -1,0 +1,16 @@
+apply:
+	kubectl apply -f 00-namespace.yml  \
+	              -f 01-cert.yml       \
+				  -f 02-deployment.yml
+
+apply-ingress:
+	kubectl apply -f 03-ingress.yml
+
+delete:
+	kubectl delete namespace pgadmin
+
+logs:
+	kubectl logs -n pgadmin service/pgadmin -f
+
+get:
+	kubectl get all -n pgadmin

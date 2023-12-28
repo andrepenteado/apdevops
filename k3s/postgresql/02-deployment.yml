@@ -1,27 +1,3 @@
-# Namespace
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: postgresql
-
-# Storage
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgresql-pvc
-  namespace: postgresql
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 5Gi
-
-# Postgresql
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
