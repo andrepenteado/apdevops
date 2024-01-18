@@ -1,6 +1,7 @@
 apply:
 	kubectl apply -f 00-namespace.yml  \
 	              -f 01-cert.yml       \
+	              -f 01-storage.yml    \
 				  -f 02-deployment.yml
 
 apply-ingress:

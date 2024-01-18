@@ -48,7 +48,7 @@
     - name: Configurar banner customizado do login
       become: true
       ansible.builtin.file:
-        path: /etc/update-motd.d/00-banner-anytask
+        path: /etc/update-motd.d/00-banner-apcode
         mode: "0755"
 
     - name: Desativar mensagem de ajuda exibida no login
@@ -69,12 +69,6 @@
         path: /etc/update-motd.d/50-motd-news
         mode: "0644"
       
-    - name: Desativar mensagem no login
-      become: true
-      ansible.builtin.file:
-        path: /etc/update-motd.d/85-fwupd
-        mode: "0644"
-
     - name: Desativar mensagem de novidades exibido no login
       become: true
       ansible.builtin.file:
