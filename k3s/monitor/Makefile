@@ -11,6 +11,7 @@ apply-ingress:
 
 delete:
 	kubectl delete namespace monitor
+	kubectl delete pv monitor-volume
 
 get:
 	kubectl get all -n monitor

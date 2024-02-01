@@ -9,6 +9,7 @@ apply-ingress:
 
 delete:
 	kubectl delete namespace pgadmin
+	kubectl delete pv pgadmin-volume
 
 logs:
 	kubectl logs -n pgadmin service/pgadmin -f

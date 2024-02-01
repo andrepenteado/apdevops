@@ -19,6 +19,9 @@ spec:
         - name: tempo
           image: grafana/tempo
           imagePullPolicy: Always
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           args:
             - '--config.file=/etc/tempo/tempo-config.yml'
           ports:
@@ -33,13 +36,14 @@ spec:
               mountPath: /etc/tempo
             - name: tempo-storage
               mountPath: /tmp/tempo
+              subPath: tempo
       volumes:
         - name: tempo-config
           configMap:
             name: tempo
         - name: tempo-storage
           persistentVolumeClaim:
-            claimName: tempo-pvc
+            claimName: monitor-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -78,6 +82,9 @@ spec:
         - name: loki
           image: grafana/loki
           imagePullPolicy: Always
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           args:
             - '--config.file=/etc/loki/loki-config.yml'
           ports:
@@ -89,13 +96,14 @@ spec:
               mountPath: /etc/loki
             - name: loki-storage
               mountPath: /tmp
+              subPath: loki
       volumes:
         - name: loki-config
           configMap:
             name: loki
         - name: loki-storage
           persistentVolumeClaim:
-            claimName: loki-pvc
+            claimName: monitor-pvc
 ---
 apiVersion: v1
 kind: Service

@@ -1,59 +1,26 @@
-# Prometheus
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: monitor-volume
+  namespace: monitor
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  hostPath:
+    path: /var/local
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: prometheus-pvc
+  name: monitor-pvc
   namespace: monitor
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 20Gi
-
-# Grafana
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: grafana-pvc
-  namespace: monitor
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 20Gi
-
-# Tempo
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: tempo-pvc
-  namespace: monitor
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 20Gi
-
-# Loki
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: loki-pvc
-  namespace: monitor
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
   resources:
     requests:
       storage: 20Gi

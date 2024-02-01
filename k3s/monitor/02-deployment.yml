@@ -20,6 +20,9 @@ spec:
         - name: prometheus
           image: prom/prometheus
           imagePullPolicy: Always
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           args:
             - '--config.file=/etc/prometheus/prometheus.yml'          
           ports:
@@ -30,13 +33,14 @@ spec:
               mountPath: /etc/prometheus
             - name: prometheus-storage
               mountPath: /prometheus/
+              subPath: prometheus
       volumes:
         - name: prometheus-config
           configMap:
             name: prometheus
         - name: prometheus-storage
           persistentVolumeClaim:
-            claimName: prometheus-pvc
+            claimName: monitor-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -114,16 +118,20 @@ spec:
         - name: grafana
           image: grafana/grafana
           imagePullPolicy: Always
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           ports:
             - name: grafana
               containerPort: 3000
           volumeMounts:
             - name: grafana-storage
               mountPath: /var/lib/grafana/
+              subPath: grafana
       volumes:
         - name: grafana-storage
           persistentVolumeClaim:
-            claimName: grafana-pvc
+            claimName: monitor-pvc
 ---
 apiVersion: v1
 kind: Service

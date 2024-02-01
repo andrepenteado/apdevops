@@ -5,9 +5,11 @@ apply:
 
 delete:
 	kubectl delete namespace postgresql
+	kubectl delete pv postgresql-volume
 
 logs:
 	kubectl logs -n postgresql service/postgresql -f
 
 get:
 	kubectl get all -n postgresql
+	kubectl get pv -n postgresql
