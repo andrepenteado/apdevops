@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rancher-ingress
+  namespace: cattle-system
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  tls:
+    - secretName: tls-rancher-ingress
+  rules:
+    - host: rancher.apcode.com.br
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: rancher
+                port:
+                  name: rancher
