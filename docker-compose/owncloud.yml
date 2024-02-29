@@ -1,0 +1,36 @@
+services:
+
+  app:
+    container_name: owncloud-app
+    image: owncloud/server:latest
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - owncloud-files:/mnt/data
+    environment:
+      - OWNCLOUD_DB_TYPE=mysql
+      - OWNCLOUD_DB_NAME=owncloud
+      - OWNCLOUD_DB_USERNAME=owncloud
+      - OWNCLOUD_DB_PASSWORD=owncloud
+      - OWNCLOUD_DB_HOST=db
+      - OWNCLOUD_ADMIN_USERNAME=admin
+      - OWNCLOUD_ADMIN_PASSWORD=admin
+      - OWNCLOUD_MYSQL_UTF8MB4=true
+      - OWNCLOUD_REDIS_ENABLED=false
+
+  db:
+    container_name: owncloud-db
+    restart: always
+    image: mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=owncloud
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=owncloud
+      - MYSQL_DATABASE=owncloud
+    volumes:
+      - owncloud-db:/var/lib/mysql
+
+volumes:
+  owncloud-files: {}
+  owncloud-db: {}
