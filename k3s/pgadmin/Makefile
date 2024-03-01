@@ -16,3 +16,8 @@ logs:
 
 get:
 	kubectl get all -n pgadmin
+
+update:
+	kubectl rollout restart deployment pgadmin -n pgadmin
+	kubectl rollout status deployment pgadmin -n pgadmin
+	kubectl rollout history deployment pgadmin -n pgadmin

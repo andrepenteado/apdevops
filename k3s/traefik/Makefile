@@ -14,3 +14,8 @@ logs:
 
 get:
 	kubectl get all -n traefik
+
+update:
+	kubectl rollout restart deployment traefik -n traefik
+	kubectl rollout status deployment traefik -n traefik
+	kubectl rollout history deployment traefik -n traefik

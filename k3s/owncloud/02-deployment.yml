@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owncloud
+  namespace: owncloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: owncloud
+  template:
+    metadata:
+      labels:
+        app: owncloud
+        name: owncloud
+    spec:
+      containers:
+        - name: owncloud
+          image: owncloud/server
+          imagePullPolicy: Always
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          ports:
+            - name: owncloud
+              containerPort: 8080
+          env:
+            - name: OWNCLOUD_DB_TYPE
+              value: "pgsql"
+            - name: OWNCLOUD_DB_NAME
+              value: "owncloud"
+            - name: OWNCLOUD_DB_USERNAME
+              value: "owncloud"
+            - name: OWNCLOUD_DB_PASSWORD
+              value: "owncloud"
+            - name: OWNCLOUD_DB_HOST
+              value: "cluster.apcode.com.br"
+            - name: OWNCLOUD_ADMIN_USERNAME
+              value: "andre.penteado@apcode.com.br"
+            - name: OWNCLOUD_ADMIN_PASSWORD
+              value: "passwebra"
+            - name: OWNCLOUD_URL
+              value: "https://owncloud.apcode.com.br"
+            - name: OWNCLOUD_TRUSTED_DOMAINS
+              value: "owncloud.apcode.com.br"
+            - name: OWNCLOUD_REDIS_ENABLED
+              value: "false"
+          volumeMounts:
+            - name: owncloud-storage
+              mountPath: /mnt/data/
+      volumes:
+        - name: owncloud-storage
+          persistentVolumeClaim:
+            claimName: owncloud-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: owncloud
+  namespace: owncloud
+spec:
+  selector:
+    app: owncloud
+  type: LoadBalancer
+  ports:
+    - name: owncloud
+      port: 8080
+      targetPort: 8080
